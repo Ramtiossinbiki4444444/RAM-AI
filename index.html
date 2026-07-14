@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>چت‌بات هوش مصنوعی حرفه‌ای</title>
+    <title>چت‌بات با دستورات دائمی</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
+        /* ===== استایل‌های قبلی ===== */
         * {
             margin: 0;
             padding: 0;
@@ -34,9 +35,9 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            position: relative;
         }
 
-        /* ===== هدر ===== */
         .chat-header {
             padding: 16px 24px 12px;
             background: #ffffff;
@@ -57,6 +58,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         .brand h1 {
@@ -73,6 +75,29 @@
             font-weight: 600;
             padding: 2px 12px;
             border-radius: 40px;
+        }
+
+        .brand .memory-badge {
+            background: #10b981;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 40px;
+        }
+
+        .brand .instruction-badge {
+            background: #f59e0b;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 40px;
+            cursor: pointer;
+        }
+
+        .brand .instruction-badge:hover {
+            background: #d97706;
         }
 
         .header-actions {
@@ -118,7 +143,6 @@
             color: #b33c2f;
         }
 
-        /* ===== مدل‌ها ===== */
         .models-row {
             display: flex;
             gap: 8px;
@@ -131,7 +155,6 @@
         .models-row::-webkit-scrollbar {
             height: 3px;
         }
-
         .models-row::-webkit-scrollbar-thumb {
             background: #d0d7de;
             border-radius: 10px;
@@ -169,7 +192,6 @@
         .model-chip .chip-icon {
             font-size: 16px;
         }
-
         .model-chip .chip-badge {
             font-size: 10px;
             background: rgba(255, 255, 255, 0.2);
@@ -177,12 +199,10 @@
             border-radius: 40px;
             font-weight: 600;
         }
-
         .model-chip.active .chip-badge {
             background: rgba(255, 255, 255, 0.25);
         }
 
-        /* ===== پیام‌ها ===== */
         .messages-area {
             flex: 1;
             overflow-y: auto;
@@ -196,7 +216,6 @@
         .messages-area::-webkit-scrollbar {
             width: 5px;
         }
-
         .messages-area::-webkit-scrollbar-thumb {
             background: #d0d7de;
             border-radius: 10px;
@@ -252,6 +271,18 @@
             border-radius: 14px;
         }
 
+        .message.instruction {
+            align-self: center;
+            background: #fef3c7;
+            border: 1px solid #fcd34d;
+            color: #92400e;
+            max-width: 95%;
+            font-size: 13px;
+            text-align: center;
+            padding: 8px 16px;
+            border-radius: 14px;
+        }
+
         .message .file-attachment {
             display: block;
             margin-top: 8px;
@@ -288,7 +319,6 @@
             gap: 5px;
             padding: 6px 0;
         }
-
         .typing-indicator span {
             width: 8px;
             height: 8px;
@@ -296,14 +326,12 @@
             border-radius: 50%;
             animation: typing 1.2s infinite ease-in-out;
         }
-
         .typing-indicator span:nth-child(2) {
             animation-delay: 0.2s;
         }
         .typing-indicator span:nth-child(3) {
             animation-delay: 0.4s;
         }
-
         @keyframes typing {
             0%,
             60%,
@@ -317,7 +345,6 @@
             }
         }
 
-        /* ===== لاگین الزامی ===== */
         .login-required-overlay {
             display: none;
             position: absolute;
@@ -341,20 +368,17 @@
         .login-required-overlay .lock-icon {
             font-size: 64px;
         }
-
         .login-required-overlay h2 {
             color: #0b1b33;
             font-size: 24px;
             font-weight: 700;
         }
-
         .login-required-overlay p {
             color: #4a5a72;
             font-size: 16px;
             max-width: 400px;
             line-height: 1.7;
         }
-
         .login-required-overlay .big-login-btn {
             background: linear-gradient(135deg, #6c5ce7, #a855f7);
             border: none;
@@ -367,13 +391,11 @@
             transition: all 0.3s;
             box-shadow: 0 8px 28px rgba(108, 92, 231, 0.35);
         }
-
         .login-required-overlay .big-login-btn:hover {
             transform: scale(1.04);
             box-shadow: 0 12px 36px rgba(108, 92, 231, 0.45);
         }
 
-        /* ===== ورودی ===== */
         .input-area {
             padding: 14px 24px 20px;
             background: #ffffff;
@@ -397,18 +419,15 @@
             border: 1px solid #e2e6ec;
             flex-wrap: wrap;
         }
-
         .file-preview.show {
             display: flex;
         }
-
         .file-preview .file-name {
             flex: 1;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
         .file-preview .remove-file {
             background: transparent;
             border: none;
@@ -417,7 +436,6 @@
             font-size: 16px;
             padding: 0 4px;
         }
-
         .file-preview .remove-file:hover {
             color: #b33c2f;
         }
@@ -449,11 +467,9 @@
             box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.08);
             background: #ffffff;
         }
-
         .input-row textarea::placeholder {
             color: #9aa6b5;
         }
-
         .input-row textarea:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -480,19 +496,16 @@
             color: #4a5a72;
             position: relative;
         }
-
         .input-actions .file-btn:hover {
             background: #e9ecf0;
             border-color: #cbd2da;
         }
-
         .input-actions .file-btn input[type="file"] {
             position: absolute;
             inset: 0;
             opacity: 0;
             cursor: pointer;
         }
-
         .input-actions .file-btn.disabled {
             opacity: 0.4;
             cursor: not-allowed;
@@ -512,17 +525,14 @@
             align-items: center;
             justify-content: center;
         }
-
         .input-actions .send-btn:hover:not(:disabled) {
             background: #5a4bd1;
             transform: scale(1.04);
             box-shadow: 0 6px 20px rgba(108, 92, 231, 0.25);
         }
-
         .input-actions .send-btn:active:not(:disabled) {
             transform: scale(0.94);
         }
-
         .input-actions .send-btn:disabled {
             opacity: 0.4;
             cursor: not-allowed;
@@ -530,7 +540,6 @@
             box-shadow: none;
         }
 
-        /* ===== وضعیت ===== */
         .status-bar {
             padding: 6px 24px 12px;
             font-size: 12px;
@@ -548,11 +557,9 @@
         .status-bar .login-status.logged-in {
             color: #16a34a;
         }
-
         .status-bar .login-status.logged-out {
             color: #dc2626;
         }
-
         .status-bar .login-btn {
             background: transparent;
             border: 1px solid #d0d7de;
@@ -563,12 +570,10 @@
             cursor: pointer;
             transition: 0.2s;
         }
-
         .status-bar .login-btn:hover {
             background: #eef0f3;
         }
 
-        /* ===== ریسپانسیو ===== */
         @media (max-width: 680px) {
             body {
                 padding: 8px;
@@ -625,33 +630,129 @@
                 font-size: 16px;
             }
         }
+
+        /* ===== مودال دستورات ===== */
+        .instructions-modal {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 20;
+            border-radius: 32px;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .instructions-modal.show {
+            display: flex;
+        }
+
+        .instructions-modal .modal-content {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .instructions-modal .modal-content h2 {
+            color: #0b1b33;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .instructions-modal .modal-content .instruction-item {
+            background: #f4f6fa;
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #1f2a41;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .instructions-modal .modal-content .instruction-item .delete-instr {
+            background: transparent;
+            border: none;
+            color: #dc2626;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .instructions-modal .modal-content .instruction-item .delete-instr:hover {
+            color: #b33c2f;
+        }
+
+        .instructions-modal .modal-content .empty-instr {
+            color: #9aa6b5;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .instructions-modal .modal-content .close-modal-btn {
+            margin-top: 16px;
+            background: #6c5ce7;
+            border: none;
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+        }
+
+        .instructions-modal .modal-content .close-modal-btn:hover {
+            background: #5a4bd1;
+        }
     </style>
 </head>
 <body>
 
-    <div class="chat-container" style="position: relative;">
+    <div class="chat-container">
 
-        <!-- ===== لایه‌ی لاگین الزامی ===== -->
+        <!-- ===== لایه‌ی لاگین ===== -->
         <div class="login-required-overlay show" id="loginOverlay">
             <div class="lock-icon">🔒</div>
             <h2>برای استفاده از چت‌بات وارد شوید</h2>
-            <p>برای دسترسی به هوش مصنوعی و استفاده از تمام قابلیت‌ها، لطفاً با حساب Puter خود وارد شوید.</p>
-            <button class="big-login-btn" id="bigLoginBtn">🔑 ورود به Puter</button>
+            <p>برای چت با AI اول باید وارد اکانت خود شوید .</p>
+            <button class="big-login-btn" id="bigLoginBtn">ورود / ثبت نام </button>
             <p style="font-size: 13px; color: #9aa6b5; margin-top: 8px;">
                 ثبت‌نام رایگان • بدون نیاز به کارت بانکی
             </p>
+        </div>
+
+        <!-- ===== مودال دستورات ===== -->
+        <div class="instructions-modal" id="instructionsModal">
+            <div class="modal-content">
+                <h2>📋 دستورات دائمی</h2>
+                <div id="instructionsList">
+                    <!-- توسط JS پر میشه -->
+                </div>
+                <button class="close-modal-btn" id="closeModalBtn">بستن</button>
+            </div>
         </div>
 
         <!-- ===== HEADER ===== -->
         <div class="chat-header">
             <div class="header-top">
                 <div class="brand">
-                    <h1>💬 چت‌بات</h1>
+                    <h1>💬 RAM AI / هوش مصنوعی رام</h1>
                     <span class="badge">AI</span>
+                    <span class="memory-badge">🧠 حافظه</span>
+                    <span class="instruction-badge" id="showInstructionsBtn">📋 دستورات</span>
                 </div>
                 <div class="header-actions">
                     <button class="action-btn primary" id="newChatBtn">✨ چت جدید</button>
-                    <button class="action-btn" id="clearHistoryBtn">🗑️ پاک کردن</button>
+                    <button class="action-btn" id="clearHistoryBtn">🗑️ پاک کردن تاریخچه</button>
                 </div>
             </div>
 
@@ -668,9 +769,9 @@
                 <button class="remove-file" id="removeFileBtn">✕</button>
             </div>
             <div class="input-row">
-                <textarea id="userInput" rows="1" placeholder="سوال خود را بنویسید... (یا فایل ضمیمه کنید)" disabled></textarea>
+                <textarea id="userInput" rows="1" placeholder="پیام خود را بنویسید... (برای دستور دائمی: @یادت بمونه ...)" disabled></textarea>
                 <div class="input-actions">
-                    <label class="file-btn disabled" id="fileBtnLabel" title="برای آپلود فایل ابتدا وارد شوید">
+                    <label class="file-btn disabled" id="fileBtnLabel">
                         📎
                         <input type="file" id="fileInput" multiple disabled />
                     </label>
@@ -681,7 +782,7 @@
 
         <!-- ===== وضعیت ===== -->
         <div class="status-bar">
-            <span class="login-status logged-out" id="loginStatus">❌ وارد نشده‌اید</span>
+            <span class="login-status logged-out" id="loginStatus">❌ وارد نشده‌اید ، برای چت وارد شویدspan>
             <button class="login-btn" id="loginBtn">🔑 ورود به Puter</button>
             <span>• بدون کلید API</span>
         </div>
@@ -702,7 +803,7 @@
             { id: 'meta-llama/llama-4-maverick', icon: '🦙', label: 'Llama 4', badge: 'Open' },
             { id: 'mistralai/mistral-small-2603', icon: '🌪️', label: 'Mistral', badge: 'Small' },
             { id: 'qwen/qwen3.7-max', icon: '🐉', label: 'Qwen 3.7', badge: 'Max' },
-            { id: 'x-ai/grok-4.5', icon: '🧩', label: 'Grok 4.5', badge: 'Beta' },
+            { id: 'x-ai/grok-4.5', icon: '🧩', label: 'Grok 4.5', badge: 'Comming soon' },
         ];
 
         // ================================================================
@@ -723,12 +824,21 @@
         const loginBtn = document.getElementById('loginBtn');
         const bigLoginBtn = document.getElementById('bigLoginBtn');
         const loginOverlay = document.getElementById('loginOverlay');
+        const showInstructionsBtn = document.getElementById('showInstructionsBtn');
+        const instructionsModal = document.getElementById('instructionsModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const instructionsList = document.getElementById('instructionsList');
 
         let isProcessing = false;
         let attachedFiles = [];
         let currentModel = MODELS[0].id;
         let isLoggedIn = false;
-        const STORAGE_KEY = 'chat_history_pro';
+
+        // ===== حافظه‌ی جدید =====
+        let conversationHistory = []; // تاریخچه‌ی معمولی (حداکثر ۲۰ پیام)
+        let permanentInstructions = []; // دستورات دائمی
+
+        const STORAGE_KEY = 'chat_with_instructions';
 
         // ================================================================
         //  ساخت مدل‌ها
@@ -754,39 +864,94 @@
         }
 
         // ================================================================
-        //  مدیریت وضعیت لاگین و فعال‌سازی المان‌ها
+        //  مدیریت دستورات دائمی
+        // ================================================================
+        function loadInstructions() {
+            const saved = localStorage.getItem('permanent_instructions');
+            if (saved) {
+                try {
+                    permanentInstructions = JSON.parse(saved);
+                } catch (e) { permanentInstructions = []; }
+            }
+            updateInstructionsBadge();
+            renderInstructionsModal();
+        }
+
+        function saveInstructions() {
+            localStorage.setItem('permanent_instructions', JSON.stringify(permanentInstructions));
+            updateInstructionsBadge();
+            renderInstructionsModal();
+        }
+
+        function updateInstructionsBadge() {
+            const count = permanentInstructions.length;
+            showInstructionsBtn.textContent = count > 0 ? `📋 ${count} دستور` : '📋 دستورات';
+        }
+
+        function addInstruction(text) {
+            // حذف @یادت بمونه از اول
+            const cleanText = text.replace(/^@یادت بمونه\s*/i, '').trim();
+            if (!cleanText) return false;
+
+            permanentInstructions.push(cleanText);
+            saveInstructions();
+            return true;
+        }
+
+        function removeInstruction(index) {
+            permanentInstructions.splice(index, 1);
+            saveInstructions();
+        }
+
+        function renderInstructionsModal() {
+            if (permanentInstructions.length === 0) {
+                instructionsList.innerHTML = `
+                    <div class="empty-instr">📭 هنوز دستوری ثبت نشده.</div>
+                    <div style="font-size: 13px; color: #9aa6b5; text-align: center; margin-top: 8px;">
+                        برای ثبت دستور، پیام خود را با <strong>@یادت بمونه</strong> شروع کنید.
+                    </div>
+                `;
+                return;
+            }
+
+            instructionsList.innerHTML = permanentInstructions.map((instr, index) => `
+                <div class="instruction-item">
+                    <span>📌 ${instr}</span>
+                    <button class="delete-instr" data-index="${index}">✕</button>
+                </div>
+            `).join('');
+
+            // حذف دستورات
+            document.querySelectorAll('.delete-instr').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const idx = parseInt(btn.dataset.index);
+                    removeInstruction(idx);
+                });
+            });
+        }
+
+        // ================================================================
+        //  مدیریت وضعیت لاگین
         // ================================================================
         function setLoggedInState(loggedIn) {
             isLoggedIn = loggedIn;
-
-            // ورودی
             userInput.disabled = !loggedIn;
-            userInput.placeholder = loggedIn ?
-                'سوال خود را بنویسید... (یا فایل ضمیمه کنید)' :
-                '🔒 لطفاً ابتدا وارد شوید...';
-
-            // دکمه ارسال
             sendBtn.disabled = !loggedIn;
 
-            // دکمه فایل
             if (loggedIn) {
                 fileBtnLabel.classList.remove('disabled');
                 fileInput.disabled = false;
-            } else {
-                fileBtnLabel.classList.add('disabled');
-                fileInput.disabled = true;
-            }
-
-            // وضعیت
-            if (loggedIn) {
                 loginStatus.textContent = '✅ وارد شده‌اید';
                 loginStatus.className = 'login-status logged-in';
                 loginOverlay.classList.remove('show');
+                userInput.placeholder = 'پیام خود را بنویسید... (برای دستور: @یادت بمونه ...)';
             } else {
+                fileBtnLabel.classList.add('disabled');
+                fileInput.disabled = true;
                 loginStatus.textContent = '❌ وارد نشده‌اید';
                 loginStatus.className = 'login-status logged-out';
                 loginOverlay.classList.add('show');
-                // پاک کردن فایل‌های آپلود شده
+                userInput.placeholder = '🔒 لطفاً ابتدا وارد شوید...';
                 clearAttachments();
             }
         }
@@ -798,44 +963,60 @@
             const saved = localStorage.getItem(STORAGE_KEY);
             if (saved) {
                 try {
-                    const msgs = JSON.parse(saved);
-                    msgs.forEach(m => {
+                    const data = JSON.parse(saved);
+                    conversationHistory = data.history || [];
+                    data.messages.forEach(m => {
                         appendMessage(m.text, m.sender, m.attachments || []);
                     });
-                    return msgs.length;
+                    return data.messages.length;
                 } catch (e) { console.warn(e); }
             }
             return 0;
         }
 
-        function saveHistory() {
+        function saveHistoryToStorage() {
             const items = [];
             document.querySelectorAll('.message').forEach(el => {
                 const sender = el.classList.contains('user') ? 'user' : (el.classList.contains('error') ? 'error' :
                     'ai');
                 const text = el.textContent.trim();
-                if (text) {
+                if (text && !el.classList.contains('error') && !el.classList.contains('instruction')) {
                     items.push({ text, sender });
                 }
             });
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                messages: items,
+                history: conversationHistory
+            }));
         }
 
         function clearAllHistory() {
-            if (confirm('همه پیام‌ها پاک می‌شن؟')) {
+            if (confirm('همه پیام‌ها و دستورات پاک می‌شن؟')) {
                 localStorage.removeItem(STORAGE_KEY);
+                localStorage.removeItem('permanent_instructions');
+                conversationHistory = [];
+                permanentInstructions = [];
                 messagesArea.innerHTML = '';
-                appendMessage('🗑️ تاریخچه پاک شد.', 'ai');
-                saveHistory();
+                appendMessage('🗑️ همه‌چیز پاک شد.', 'ai');
+                saveHistoryToStorage();
+                saveInstructions();
+                updateInstructionsBadge();
+                renderInstructionsModal();
             }
         }
 
         function startNewChat() {
-            if (confirm('چت جدید شروع بشه؟')) {
+            if (confirm('چت جدید شروع بشه؟ (دستورات دائمی باقی می‌مونن)')) {
                 localStorage.removeItem(STORAGE_KEY);
+                conversationHistory = [];
                 messagesArea.innerHTML = '';
                 appendMessage('✨ چت جدید شروع شد!', 'ai');
-                saveHistory();
+                saveHistoryToStorage();
+                // نمایش دستورات موجود
+                if (permanentInstructions.length > 0) {
+                    const instrText = permanentInstructions.map(i => `📌 ${i}`).join('\n');
+                    appendMessage(`📋 دستورات فعال:\n${instrText}`, 'instruction');
+                }
             }
         }
 
@@ -880,7 +1061,18 @@
 
             messagesArea.appendChild(div);
             messagesArea.scrollTop = messagesArea.scrollHeight;
-            saveHistory();
+
+            // ذخیره در حافظه (فقط پیام‌های غیر خطا و غیر دستور)
+            if (sender !== 'error' && sender !== 'instruction' && text) {
+                const role = sender === 'user' ? 'user' : 'assistant';
+                conversationHistory.push({ role, content: text });
+                // محدود کردن به ۲۰ پیام
+                if (conversationHistory.length > 20) {
+                    conversationHistory = conversationHistory.slice(-20);
+                }
+                saveHistoryToStorage();
+            }
+
             return div;
         }
 
@@ -1008,7 +1200,7 @@
         removeFileBtn.addEventListener('click', clearAttachments);
 
         // ================================================================
-        //  تابع اصلی ارسال پیام
+        //  تابع اصلی ارسال پیام (با دستورات دائمی)
         // ================================================================
         async function sendMessage() {
             if (!isLoggedIn) {
@@ -1023,6 +1215,23 @@
             const msgText = text || '📎 [فایل ضمیمه]';
             const model = currentModel;
 
+            // ===== بررسی دستور دائمی =====
+            if (text.startsWith('@یادت بمونه') || text.startsWith('@نکته')) {
+                const added = addInstruction(text);
+                if (added) {
+                    appendMessage(`✅ دستور ثبت شد: "${text.replace(/^@یادت بمونه\s*/i, '').trim()}"`, 'instruction');
+                    userInput.value = '';
+                    userInput.style.height = 'auto';
+                    clearAttachments();
+                    userInput.focus();
+                    return;
+                } else {
+                    appendMessage('⚠️ لطفاً بعد از @یادت بمونه متن دستور را بنویسید.', 'error');
+                    return;
+                }
+            }
+
+            // نمایش پیام کاربر
             const userAttachments = attachedFiles.map(f => ({
                 name: f.name,
                 type: f.type,
@@ -1050,24 +1259,62 @@
                     return;
                 }
 
+                // ============================================================
+                //  ساخت تاریخچه برای AI
+                // ============================================================
+                const MAX_HISTORY = 15;
+
+                // 1. دستورات دائمی به عنوان system messages
+                const messages = [];
+
+                // اضافه کردن دستورات دائمی به عنوان system
+                for (const instr of permanentInstructions) {
+                    messages.push({
+                        role: 'system',
+                        content: `[دستور دائمی] ${instr}`
+                    });
+                }
+
+                // 2. تاریخچه‌ی معمولی (۱۵ پیام آخر)
+                const start = Math.max(0, conversationHistory.length - MAX_HISTORY);
+                const recentHistory = conversationHistory.slice(start);
+
+                for (const msg of recentHistory) {
+                    messages.push({
+                        role: msg.role,
+                        content: msg.content
+                    });
+                }
+
+                // 3. پیام فعلی کاربر (با محتوای چندگانه)
                 const content = [];
+
                 if (text) content.push({ type: 'text', text });
 
                 const imageFiles = filesToSend.filter(f => f.data && f.type.startsWith('image/'));
                 for (const img of imageFiles) {
-                    content.push({ type: 'image_url', image_url: { url: img.data } });
+                    content.push({
+                        type: 'image_url',
+                        image_url: { url: img.data }
+                    });
                 }
 
                 const textFiles = filesToSend.filter(f => f.content);
                 for (const tf of textFiles) {
                     const preview = tf.content.length > 500 ? tf.content.slice(0, 500) + '...' : tf.content;
-                    content.push({ type: 'text', text: `📄 محتوای فایل "${tf.name}":\n${preview}` });
+                    content.push({
+                        type: 'text',
+                        text: `📄 محتوای فایل "${tf.name}":\n${preview}`
+                    });
                 }
 
                 const otherFiles = filesToSend.filter(f => !f.data && !f.content);
                 if (otherFiles.length > 0) {
                     const names = otherFiles.map(f => f.name).join(', ');
-                    content.push({ type: 'text', text: `[فایل‌های ضمیمه: ${names}]` });
+                    content.push({
+                        type: 'text',
+                        text: `[فایل‌های ضمیمه: ${names}]`
+                    });
                 }
 
                 if (content.length === 0) {
@@ -1077,22 +1324,26 @@
                     return;
                 }
 
-                let response;
-                if (content.length === 1 && content[0].type === 'text') {
-                    response = await puter.ai.chat(content[0].text, {
-                        model: model,
-                        stream: true
-                    });
-                } else {
-                    response = await puter.ai.chat(content, {
-                        model: model,
-                        stream: true
-                    });
-                }
+                messages.push({
+                    role: 'user',
+                    content: content
+                });
+
+                console.log(`📝 ارسال ${messages.length} پیام (${permanentInstructions.length} دستور، ${recentHistory.length} پیام قبلی)`);
+
+                // ============================================================
+                //  ارسال به AI
+                // ============================================================
+                const response = await puter.ai.chat(messages, {
+                    model: model,
+                    stream: true
+                });
 
                 removeTyping();
+
                 const aiMsgDiv = appendMessage('', 'ai');
                 let fullText = '';
+
                 for await (const chunk of response) {
                     if (chunk?.text) {
                         fullText += chunk.text;
@@ -1100,7 +1351,12 @@
                         messagesArea.scrollTop = messagesArea.scrollHeight;
                     }
                 }
-                if (!fullText) aiMsgDiv.textContent = '⚠️ پاسخی دریافت نشد.';
+
+                if (!fullText) {
+                    aiMsgDiv.textContent = '⚠️ پاسخی دریافت نشد.';
+                    conversationHistory.pop();
+                    saveHistoryToStorage();
+                }
 
             } catch (error) {
                 removeTyping();
@@ -1113,6 +1369,10 @@
                     msg += 'اعتبار کافی نیست. لطفاً حساب خود را شارژ کنید.';
                 } else if (error.message?.includes('vision') || error.message?.includes('image')) {
                     msg += 'مدل انتخاب‌شده از تصویر پشتیبانی نمی‌کند. مدلی با برچسب "Vision" انتخاب کنید.';
+                } else if (error.message?.includes('context length') || error.message?.includes('too many tokens')) {
+                    msg += 'تاریخچه خیلی طولانی است. چت جدید شروع کنید.';
+                    conversationHistory = [];
+                    saveHistoryToStorage();
                 } else {
                     msg += error.message || 'خطای ناشناخته';
                 }
@@ -1130,7 +1390,12 @@
             try {
                 await puter.auth.signIn();
                 await checkLoginStatus();
-                appendMessage('✅ ورود موفق! حالا می‌توانید چت کنید.', 'ai');
+                appendMessage('✅ ورود موفق بود!', 'ai');
+                // نمایش دستورات فعال
+                if (permanentInstructions.length > 0) {
+                    const instrText = permanentInstructions.map(i => `📌 ${i}`).join('\n');
+                    appendMessage(`📋 دستورات فعال:\n${instrText}`, 'instruction');
+                }
             } catch (e) {
                 appendMessage('❌ ورود ناموفق: ' + (e.message || 'خطا'), 'error');
             }
@@ -1173,6 +1438,22 @@
         loginBtn.addEventListener('click', handleLogin);
         bigLoginBtn.addEventListener('click', handleLogin);
 
+        // مودال دستورات
+        showInstructionsBtn.addEventListener('click', () => {
+            renderInstructionsModal();
+            instructionsModal.classList.add('show');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            instructionsModal.classList.remove('show');
+        });
+
+        instructionsModal.addEventListener('click', (e) => {
+            if (e.target === instructionsModal) {
+                instructionsModal.classList.remove('show');
+            }
+        });
+
         // ================================================================
         //  راه‌اندازی
         // ================================================================
@@ -1183,15 +1464,20 @@
             }
 
             renderModels();
+            loadInstructions();
             await checkLoginStatus();
 
             const count = loadHistory();
             if (count === 0) {
-                appendMessage('👋 سلام! من چت‌بات هوش مصنوعی هستم.', 'ai');
+                appendMessage('👋 سلام! من چت‌بات با دستورات دائمی هستم.', 'ai');
                 if (!isLoggedIn) {
                     appendMessage('🔑 لطفاً با کلیک روی دکمه‌ی "ورود به Puter" وارد شوید.', 'error');
                 } else {
-                    appendMessage('💡 آماده‌ای! سوال بپرس یا فایل آپلود کن.', 'ai');
+                    appendMessage('💡 برای ثبت یک نکته‌ی دائمی، پیام را با @یادت بمونه شروع کن.', 'ai');
+                    if (permanentInstructions.length > 0) {
+                        const instrText = permanentInstructions.map(i => `📌 ${i}`).join('\n');
+                        appendMessage(`📋 دستورات فعال:\n${instrText}`, 'instruction');
+                    }
                 }
             }
 
